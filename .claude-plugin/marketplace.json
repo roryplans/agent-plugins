@@ -3,6 +3,9 @@
   "owner": {
     "name": "RoryPlans"
   },
+  "metadata": {
+    "description": "Official RoryPlans plugin marketplace: connect Claude Code to RoryPlans plans, tasks, and the coding-agent dispatch queue."
+  },
   "plugins": [
     {
       "name": "roryplans",

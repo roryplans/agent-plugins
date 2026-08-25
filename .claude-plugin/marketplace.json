@@ -1,0 +1,13 @@
+{
+  "name": "roryplans",
+  "owner": {
+    "name": "RoryPlans"
+  },
+  "plugins": [
+    {
+      "name": "roryplans",
+      "source": "./plugin",
+      "description": "Connect Claude Code to RoryPlans: plans, tasks, and the coding-agent dispatch queue."
+    }
+  ]
+}

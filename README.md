@@ -5,6 +5,7 @@ Connect Claude Code to [RoryPlans](https://www.roryplans.ai): plan management to
 Installing this plugin gives you:
 
 - **The RoryPlans MCP server**, auto-configured (`https://www.roryplans.ai/api/mcp`) — plan tools (`create_plan`, `modify_plan`, `duplicate_plan`, `list_plans`, `list_tasks`) and dispatch-queue tools (`get_next_task`, `list_pending_tasks`, `complete_task`, `fail_task`).
+- **`/roryplans:setup`** — guided token setup (stores `RORYPLANS_MCP_TOKEN` in your Claude Code settings).
 - **`/roryplans:next`** — pull and execute the next queued dispatch task, then report back. One task per cycle.
 - **`/roryplans:tasks`** — list pending dispatch tasks for your agent.
 - **A task-loop skill** Claude uses automatically whenever you talk about RoryPlans plans or queued agent work.
@@ -19,6 +20,10 @@ claude plugin install roryplans@roryplans
 ## Token setup (required)
 
 The MCP server authenticates with a RoryPlans API token read from the `RORYPLANS_MCP_TOKEN` environment variable.
+
+**Easiest path:** start a `claude` session and run `/roryplans:setup`. It walks you through creating a token, stores it in `~/.claude/settings.json` (`env` block), and tells you how to verify. Then restart Claude Code. (Note: a token pasted into chat becomes part of that conversation's transcript — use the manual path below if you'd rather keep it out.)
+
+**Manual path:**
 
 1. Sign in to RoryPlans and create a token:
    - **Manage Agents → Connect Platform** (recommended for the dispatch queue — this also creates the agent ID work is dispatched to), or

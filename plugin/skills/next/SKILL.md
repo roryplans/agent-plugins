@@ -8,7 +8,7 @@ argument-hint: [agentId]
 
 Run exactly one RoryPlans dispatch task cycle:
 
-1. Verify the RoryPlans MCP tools are reachable. If the tools are deferred, load them first: ToolSearch on the RoryPlans MCP for `get_next_task`, `complete_task`, and `fail_task`. If the server is not connected or returns 401/Unauthorized, stop and tell the user: the `RORYPLANS_MCP_TOKEN` environment variable is likely missing or expired — see the plugin README for token setup.
+1. Verify the RoryPlans MCP tools are reachable. If the tools are deferred, load them first: ToolSearch on the RoryPlans MCP for `get_next_task`, `complete_task`, and `fail_task`. If the server is not connected or returns 401/Unauthorized, stop and tell the user: the `RORYPLANS_MCP_TOKEN` environment variable is likely missing or expired — run `/roryplans:setup` to configure it (or see the plugin README).
 2. Determine the agent ID: use `$ARGUMENTS` if provided, otherwise `claude-code`.
 3. Call `get_next_task` with `{ "agentId": "<agent id from step 2>" }`.
 4. If no task is returned, report "no pending tasks for <agentId>" and stop. Do not invent work.

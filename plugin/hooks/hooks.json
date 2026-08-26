@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"$RORYPLANS_MCP_TOKEN\" ] || echo 'RoryPlans plugin: RORYPLANS_MCP_TOKEN is not set, so the RoryPlans MCP server cannot authenticate. If the user asks to use RoryPlans, tell them to run /roryplans:setup first.'"
+          }
+        ]
+      }
+    ]
+  }
+}

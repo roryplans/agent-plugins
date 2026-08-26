@@ -38,6 +38,6 @@ Follow this contract exactly when pulling dispatched work:
 
 ## Failure modes
 
-- **401 / Unauthorized**: the `RORYPLANS_MCP_TOKEN` environment variable is missing, empty, or expired. Tell the user to follow the token setup steps in the plugin README (create a token in RoryPlans, export it in their shell profile, restart Claude Code).
+- **401 / Unauthorized**: the `RORYPLANS_MCP_TOKEN` environment variable is missing, empty, or expired. Tell the user to run `/roryplans:setup` to configure a token (or follow the token setup steps in the plugin README).
 - **Empty queue**: `get_next_task` returns no task. Report "no pending tasks" — do not fabricate work.
 - **No tasks for this agent ID**: dispatch tools only return work queued for the matching `agentId`. Ask the user to check the agent ID in RoryPlans Manage Agents and confirm work was dispatched.

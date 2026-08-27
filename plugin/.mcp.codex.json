@@ -1,0 +1,8 @@
+{
+  "mcp_servers": {
+    "roryplans": {
+      "url": "https://www.roryplans.ai/api/mcp",
+      "bearer_token_env_var": "RORYPLANS_MCP_TOKEN"
+    }
+  }
+}

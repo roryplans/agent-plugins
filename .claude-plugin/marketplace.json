@@ -4,7 +4,7 @@
     "name": "RoryPlans"
   },
   "metadata": {
-    "description": "Official RoryPlans plugin marketplace: connect Claude Code to RoryPlans plans, tasks, and the coding-agent dispatch queue."
+    "description": "Official RoryPlans plugin marketplace: connect Claude Code or Codex to RoryPlans plans, tasks, and the coding-agent dispatch queue."
   },
   "plugins": [
     {

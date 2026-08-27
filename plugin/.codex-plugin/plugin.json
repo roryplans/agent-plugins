@@ -1,0 +1,20 @@
+{
+  "name": "roryplans",
+  "version": "0.3.0",
+  "description": "Connect Codex to RoryPlans: plan management tools and the coding-agent dispatch queue over the RoryPlans remote MCP server.",
+  "author": {
+    "name": "RoryPlans",
+    "url": "https://www.roryplans.ai"
+  },
+  "homepage": "https://www.roryplans.ai/documentation/claude-connector",
+  "repository": "https://github.com/roryplans/agent-plugins",
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.codex.json",
+  "interface": {
+    "displayName": "RoryPlans",
+    "shortDescription": "RoryPlans plans, tasks, and agent dispatch queue",
+    "developerName": "RoryPlans",
+    "category": "Productivity",
+    "websiteURL": "https://www.roryplans.ai"
+  }
+}

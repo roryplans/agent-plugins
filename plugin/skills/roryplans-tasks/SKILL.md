@@ -5,7 +5,7 @@ description: How to work with RoryPlans over MCP — plan management tools and t
 
 # RoryPlans tasks and plans over MCP
 
-RoryPlans is a planning platform. This plugin connects Claude Code to the RoryPlans remote MCP server (`https://www.roryplans.ai/api/mcp`), which exposes two tool families:
+RoryPlans is a planning platform. This plugin connects your coding agent (Claude Code or Codex) to the RoryPlans remote MCP server (`https://www.roryplans.ai/api/mcp`), which exposes two tool families:
 
 ## Plan tools
 
@@ -28,7 +28,7 @@ RoryPlans can dispatch queued work to coding agents. These tools implement a pul
 
 Follow this contract exactly when pulling dispatched work:
 
-1. Pull ONE task with `get_next_task` using `{ "agentId": "claude-code" }`. Use a different literal only if the user created a custom platform agent or extra bridge in RoryPlans Manage Agents (accepted values: `claude_cowork`, `claude-code`, `codex`, a Custom Platform agent id, or a bridge agent config UUID).
+1. Pull ONE task with `get_next_task` using the default `agentId` for this platform — `"claude-code"` when running in Claude Code, `"codex"` when running in Codex. Use a different literal only if the user created a custom platform agent or extra bridge in RoryPlans Manage Agents (accepted values: `claude_cowork`, `claude-code`, `codex`, a Custom Platform agent id, or a bridge agent config UUID).
 2. Execute the prompt returned by `get_next_task` in this environment (repo, tools, browser if available).
 3. Verify the work actually succeeded.
 4. Call `complete_task` with that `taskId`, the output, and a real summary of what was done — ONLY after the work is verified. Never mark unverified or fabricated work complete.
@@ -38,6 +38,6 @@ Follow this contract exactly when pulling dispatched work:
 
 ## Failure modes
 
-- **401 / Unauthorized**: the `RORYPLANS_MCP_TOKEN` environment variable is missing, empty, or expired. Tell the user to run `/roryplans:setup` to configure a token (or follow the token setup steps in the plugin README).
+- **401 / Unauthorized**: the `RORYPLANS_MCP_TOKEN` environment variable is missing, empty, or expired. Tell the user to run the plugin's `setup` command to configure a token (or follow the token setup steps in the plugin README).
 - **Empty queue**: `get_next_task` returns no task. Report "no pending tasks" — do not fabricate work.
 - **No tasks for this agent ID**: dispatch tools only return work queued for the matching `agentId`. Ask the user to check the agent ID in RoryPlans Manage Agents and confirm work was dispatched.

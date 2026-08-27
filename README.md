@@ -26,6 +26,8 @@ codex plugin marketplace add roryplans/agent-plugins
 codex plugin add roryplans
 ```
 
+The plugin ships a `SessionStart` hook that adds a short reminder to the session context when `RORYPLANS_MCP_TOKEN` is not set (context only — it runs no side effects). Codex's hook trust model marks newly installed or changed plugin hooks for review and skips them until you trust them: run `/hooks` inside a Codex session to review and trust the hook.
+
 If you'd rather skip the plugin and only connect the MCP server:
 
 ```bash

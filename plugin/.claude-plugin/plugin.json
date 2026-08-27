@@ -1,7 +1,7 @@
 {
   "name": "roryplans",
   "description": "Connect Claude Code to RoryPlans: plan management tools and the coding-agent dispatch queue over the RoryPlans remote MCP server.",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "author": {
     "name": "RoryPlans"
   },

@@ -21,8 +21,8 @@ RoryPlans can dispatch queued work to coding agents. These tools implement a pul
 
 - `get_next_task` — claim the next pending dispatch task for an agent ID and receive its composed prompt.
 - `list_pending_tasks` — list pending and claimed dispatch tasks for an agent ID.
-- `complete_task` — mark a task completed with a summary and optional agent output.
-- `fail_task` — mark a task failed with an error message.
+- `complete_task` — mark a task completed with a summary, optional agent output, and optional self-reported `usage`.
+- `fail_task` — mark a task failed with an error message and optional self-reported `usage`.
 
 ## Task-loop contract
 
@@ -33,6 +33,7 @@ Follow this contract exactly when pulling dispatched work:
 3. Verify the work actually succeeded.
 4. Call `complete_task` with that `taskId`, the output, and a real summary of what was done — ONLY after the work is verified. Never mark unverified or fabricated work complete.
 5. If blocked or the task cannot be done, call `fail_task` with that `taskId` and a clear reason instead.
+   - Usage: if `get_next_task` returned `usageReporting`, run its `command` right before `complete_task` / `fail_task` and pass the JSON it prints as `usage` (omit `usage` if it prints an error or cannot run). It reads only token counts and model names from your own session transcript; RoryPlans shows the plan owner a self-reported estimate and never bills it. Never estimate usage yourself.
 6. One task per cycle. After completing or failing a task, stop and report — do not pull another unless asked.
 7. If the queue is empty, report "no pending tasks" and stop. Never invent work.
 

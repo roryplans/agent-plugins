@@ -66,7 +66,7 @@ Pull and run the next queued task (defaults to agent ID `claude-code` on Claude 
 /roryplans:next
 ```
 
-With a custom agent ID (from Manage Agents — a Custom Platform id or bridge config UUID):
+With a custom agent ID (from Manage Agents — a Custom Platform id or an external agent's config UUID):
 
 ```
 /roryplans:next my-custom-agent-id
@@ -91,7 +91,7 @@ Plan tools work through normal conversation, e.g. *"Create a RoryPlans plan for 
 Confirm the token belongs to the RoryPlans user you expect, and that the plan is owned by that user or shared with their team.
 
 **`next` / `tasks` reports no pending tasks**
-Dispatch tools only return work queued for the matching agent ID. Check the agent ID in RoryPlans **Manage Agents** and make sure work has actually been dispatched to it. If you connected via a Custom Platform or extra bridge, pass its id explicitly, e.g. `/roryplans:next <agentId>`.
+Dispatch tools only return work queued for the matching agent ID. Check the agent ID in RoryPlans **Manage Agents** and make sure work has actually been dispatched to it. If you connected via a Custom Platform or an extra external agent, pass its id explicitly, e.g. `/roryplans:next <agentId>`.
 
 **Token creation blocked**
 Creating API tokens or OAuth clients requires an active RoryPlans subscription.

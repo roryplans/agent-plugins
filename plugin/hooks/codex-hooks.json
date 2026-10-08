@@ -10,18 +10,6 @@
           }
         ]
       }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "mcp__plugin_roryplans_roryplans__(complete_task|fail_task)",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/attach-usage.py\" || true",
-            "timeout": 30
-          }
-        ]
-      }
     ]
   }
 }

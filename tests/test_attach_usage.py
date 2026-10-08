@@ -217,6 +217,42 @@ class AttachUsageHookTest(unittest.TestCase):
         for stdin in ["", "not json", "[]", json.dumps({"tool_input": 5})]:
             self.assertIsNone(self.run_hook(stdin))
 
+    def test_hook_command_never_exits_2(self):
+        # Exit code 2 from a PreToolUse hook blocks the call. python3 exits 2
+        # when it cannot open the file (e.g. a plugin version directory removed
+        # under a long-lived session), so the configured command must not.
+        with open(os.path.join(ROOT, "plugin", "hooks", "hooks.json")) as fh:
+            config = json.load(fh)
+        (entry,) = config["hooks"]["PreToolUse"]
+        command = entry["hooks"][0]["command"]
+        self.write(
+            self.transcript,
+            claim(TASK, "2026-10-06T10:00:01.000Z")
+            + [assistant("msg_1", "2026-10-06T10:00:05.000Z", 4, 6)],
+        )
+        for plugin_root, attaches in [
+            (os.path.join(ROOT, "plugin"), True),
+            (os.path.join(self.home, "gone"), False),
+        ]:
+            done = subprocess.run(
+                ["sh", "-c", command],
+                input=json.dumps(self.event()),
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                env={
+                    "PATH": os.environ.get("PATH", ""),
+                    "HOME": self.home,
+                    "CLAUDE_PLUGIN_ROOT": plugin_root,
+                },
+                universal_newlines=True,
+                timeout=60,
+            )
+            self.assertEqual(done.returncode, 0, done.stderr)
+            if attaches:
+                self.assertIn("models", json.loads(done.stdout)["hookSpecificOutput"]["updatedInput"]["usage"])
+            else:
+                self.assertEqual(done.stdout.strip(), "")
+
 
 if __name__ == "__main__":
     unittest.main()

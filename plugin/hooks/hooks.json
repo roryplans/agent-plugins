@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/attach-usage.py\"",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/attach-usage.py\" || true",
             "timeout": 30
           }
         ]

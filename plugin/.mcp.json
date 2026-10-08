@@ -3,7 +3,8 @@
     "type": "http",
     "url": "https://www.roryplans.ai/api/mcp",
     "headers": {
-      "Authorization": "Bearer ${RORYPLANS_MCP_TOKEN}"
+      "Authorization": "Bearer ${RORYPLANS_MCP_TOKEN}",
+      "X-RoryPlans-Usage-Hook": "1"
     }
   }
 }

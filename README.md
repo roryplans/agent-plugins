@@ -9,6 +9,7 @@ Installing the plugin gives you:
 - **`next`** — pull and execute the next queued dispatch task, then report back. One task per cycle. (`/roryplans:next` in Claude Code.)
 - **`tasks`** — list pending dispatch tasks for your agent. (`/roryplans:tasks` in Claude Code.)
 - **A task-loop skill** the agent uses automatically whenever you talk about RoryPlans plans or queued agent work.
+- **Token usage reporting** (Claude Code) — a hook adds the task's measured token usage to `complete_task` / `fail_task`, so the plan owner sees what the run used. See [Token usage reporting](#token-usage-reporting).
 
 > This repo was previously named `roryplans/claude-plugin`; GitHub redirects keep existing installs working.
 
@@ -82,6 +83,17 @@ In Codex, invoke the same skills from the `$`/`/skills` menu (`next`, `tasks`, `
 
 Plan tools work through normal conversation, e.g. *"Create a RoryPlans plan for launching our customer onboarding campaign next month"* or *"List my RoryPlans plans."*
 
+## Token usage reporting
+
+RoryPlans shows plan owners and editors what each external-agent run used, as a self-reported estimate that is never billed.
+
+- **Claude Code:** nothing to run. Right before a RoryPlans `complete_task` / `fail_task` call, the plugin's `PreToolUse` hook (`hooks/attach-usage.py`) runs `scripts/usage-report.py` on the current session's transcript and adds the one-line JSON report to the call as `usage`. The plugin's MCP config sends `X-RoryPlans-Usage-Hook: 1`, so `get_next_task` then gives the agent no command to run. This works in every permission mode, auto mode included: there is no shell command for a safety check to judge, and the hook returns no permission decision, so `complete_task` / `fail_task` go through your permission rules exactly as before. The hook reads only token counts, model names and timestamps, sends nothing itself, and never blocks a call — if anything goes wrong the call goes ahead without usage. Needs `python3` on `PATH`.
+- **Codex:** the `get_next_task` response carries a short command for the agent to run before completing the task (see the `next` skill).
+
+The hook needs only the `taskId` in the `get_next_task` result, so it also works against servers that predate the header (the skills tell the agent not to run the server's command in Claude Code).
+
+`scripts/usage-report.py` is a byte-identical copy of the script the RoryPlans server documents (`lib/agents/external-usage/usage-script.ts`, exported with `scripts/export-usage-report-script.ts`); its SHA-256 is pinned by a test there.
+
 ## Troubleshooting
 
 **MCP server shows failed / every call returns 401 Unauthorized**
@@ -93,8 +105,15 @@ Confirm the token belongs to the RoryPlans user you expect, and that the plan is
 **`next` / `tasks` reports no pending tasks**
 Dispatch tools only return work queued for the matching agent ID. Check the agent ID in RoryPlans **Manage Agents** and make sure work has actually been dispatched to it. If you connected via a Custom Platform or an extra external agent, pass its id explicitly, e.g. `/roryplans:next <agentId>`.
 
+**`complete_task` returns `"usage": "not_provided"` in Claude Code**
+The usage hook did not run: check that `python3` is on `PATH`, that hooks are not disabled (`disableAllHooks`), and that the plugin is 0.4.0 or later (`claude plugin list`). `"usage": "ignored:script_error:<code>"` means the hook ran but could not measure the session (for example `claim_not_found` when the task was claimed in a different session).
+
 **Token creation blocked**
 Creating API tokens or OAuth clients requires an active RoryPlans subscription.
+
+## Development
+
+Hook tests (stdlib only): `python3 -m unittest discover -s tests`
 
 ## More
 

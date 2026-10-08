@@ -33,7 +33,7 @@ Follow this contract exactly when pulling dispatched work:
 3. Verify the work actually succeeded.
 4. Call `complete_task` with that `taskId`, the output, and a real summary of what was done — ONLY after the work is verified. Never mark unverified or fabricated work complete.
 5. If blocked or the task cannot be done, call `fail_task` with that `taskId` and a clear reason instead.
-   - Usage: if `get_next_task` returned `usageReporting`, run its `command` right before `complete_task` / `fail_task` and pass the JSON it prints as `usage` (omit `usage` if it prints an error or cannot run). It reads only token counts and model names from your own session transcript; RoryPlans shows the plan owner a self-reported estimate and never bills it. Never estimate usage yourself.
+   - Usage: in Claude Code, do nothing — this plugin's hook measures the task's token usage and adds it to `complete_task` / `fail_task` itself; do not run `usageReporting.command` and do not pass `usage`. In Codex, if `get_next_task` returned a `usageReporting.command`, run it right before `complete_task` / `fail_task` and pass the JSON it prints as `usage` (omit `usage` if it prints an error or cannot run). Either way only token counts and model names are read from your own session transcript; RoryPlans shows the plan owner a self-reported estimate and never bills it. Never estimate usage yourself.
 6. One task per cycle. After completing or failing a task, stop and report — do not pull another unless asked.
 7. If the queue is empty, report "no pending tasks" and stop. Never invent work.
 
